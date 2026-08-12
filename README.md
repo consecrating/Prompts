@@ -4,6 +4,8 @@
 
 A photorealism-first prompt library designed to produce images that look like real photographs — not AI-generated content. Built for NanoBanana, ChatGPT, Gemini, and Grok. Auto-installable by providing the repo URL to any supported platform.
 
+### 🔧 [ChatGPT Image Fix Guide](CHATGPT-FIX.md) — 12 common problems & proven fixes
+
 ---
 
 ## What Makes This Different

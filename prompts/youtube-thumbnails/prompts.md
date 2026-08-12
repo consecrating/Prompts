@@ -1,6 +1,26 @@
 # YouTube Thumbnail Design Prompts (100)
 
 > Professional design prompts for commercial use.
+---
+
+## ⚠️ ChatGPT Optimization Rules (Prepend to ANY prompt below when using ChatGPT)
+
+If generating with ChatGPT/DALL-E, **paste this block BEFORE your chosen prompt:**
+
+```
+STRICT RULES:
+1. ALL text in the image must be EXTREMELY LARGE (headline fills 30%+ of width)
+2. Text MUST have maximum contrast with background (white on dark, black on light, NEVER dark on dark)
+3. Maximum 3 text elements in the entire image — headline, subtext, and one detail. Nothing more.
+4. 40% of image must be empty/clean breathing space
+5. NO generic office buildings or corporate stock imagery
+6. Layout must be readable on a 6-inch phone screen
+7. If something looks cluttered, REMOVE it rather than shrink it
+```
+
+For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
+
+---
 
 
 ## YT-001
