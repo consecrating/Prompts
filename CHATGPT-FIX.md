@@ -94,17 +94,31 @@ Use a simple, clean sans-serif font. No decorative or script fonts
 
 ---
 
-### Problem 7: Wrong Orientation / Aspect Ratio Issues
-**Why:** The model sometimes creates content in the wrong orientation, or fills non-square formats with repeated/stretched content.
+### Problem 7: Wrong Orientation / Aspect Ratio Issues (especially 4:5 for Instagram)
+**Why:** The model sometimes creates content in the wrong orientation, or fills non-square formats with repeated/stretched content. **The 4:5 ratio (1080x1350) which is optimal for Instagram posts is particularly problematic** — ChatGPT often generates 1:1 square or 16:9 landscape instead, or creates a 4:5 frame but fills it as if it were square with empty bars.
 
 **Fix in prompts:**
 ```
-FORMAT: Vertical 9:16 portrait orientation (taller than wide).
-The ENTIRE composition is designed for vertical viewing.
-Do NOT create a horizontal image and rotate it.
-Do NOT create a square image with blank bars.
-The subject fills the vertical frame naturally.
+FORMAT: Exactly 4:5 vertical ratio (1080px wide × 1350px tall) for Instagram post.
+This is a TALL RECTANGLE — noticeably taller than it is wide.
+DO NOT generate a square (1:1). DO NOT generate landscape (16:9).
+The composition must USE the full vertical height — subject/content 
+extends from top to bottom with no blank bars, no black borders, 
+no wasted space at top or bottom.
+Design the layout as PORTRAIT/VERTICAL from the start — 
+do not create a square image and add padding.
 ```
+
+**Additional workaround if it keeps generating wrong ratio:**
+```
+Imagine this image printed on a standard portrait photograph 
+(like a 4×5 inch print held vertically). The entire design 
+fills this tall rectangle completely edge to edge.
+Dimensions: width=1080, height=1350. Vertical. Portrait. Taller than wide.
+```
+
+**Nuclear option (if nothing else works):**
+Generate at 9:16 (which ChatGPT handles better) and crop to 4:5 afterward. Or generate at 1:1 and extend vertically in a second pass.
 
 ---
 

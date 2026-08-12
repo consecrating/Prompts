@@ -20,6 +20,16 @@ STRICT RULES:
 
 For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
+### Instagram 4:5 Ratio Fix (ChatGPT specific):
+ChatGPT frequently fails to generate proper 4:5 (1080×1350) images. Add this to any Instagram prompt:
+```
+CRITICAL: This image MUST be exactly 4:5 ratio (1080px wide × 1350px tall).
+This is a TALL rectangle, noticeably taller than wide. NOT a square.
+Content fills the entire frame edge-to-edge with no blank bars or padding.
+Design vertically from the start — do not make a square and stretch it.
+```
+If ChatGPT still generates square, try: "Dimensions: width=1080 height=1350 pixels. Portrait orientation. Taller than wide."
+
 ---
 
 
@@ -28,7 +38,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-002
-> Instagram client testimonial quote card post for restaurant business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
+> Instagram client testimonial quote card post for restaurant business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
 
 
 ## IG-003
@@ -40,7 +50,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-005
-> Instagram behind-the-scenes post for dental clinic business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
+> Instagram behind-the-scenes post for dental clinic business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
 
 
 ## IG-006
@@ -52,7 +62,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-008
-> Instagram event announcement post for wedding planner business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
+> Instagram event announcement post for wedding planner business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
 
 
 ## IG-009
@@ -64,7 +74,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-011
-> Instagram new product launch post for photography studio business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, warm inviting palette
+> Instagram new product launch post for photography studio business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, warm inviting palette
 
 
 ## IG-012
@@ -76,7 +86,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-014
-> Instagram Q&A engagement post post for coffee shop business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, bold energetic colors
+> Instagram Q&A engagement post post for coffee shop business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, bold energetic colors
 
 
 ## IG-015
@@ -88,7 +98,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-017
-> Instagram portfolio showcase post for travel agency business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
+> Instagram portfolio showcase post for travel agency business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
 
 
 ## IG-018
@@ -100,7 +110,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-020
-> Instagram holiday special offer post for consulting firm business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
+> Instagram holiday special offer post for consulting firm business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
 
 
 ## IG-021
@@ -112,7 +122,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-023
-> Instagram service showcase post for architecture firm business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
+> Instagram service showcase post for architecture firm business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
 
 
 ## IG-024
@@ -124,7 +134,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-026
-> Instagram promotional offer post for real estate business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, warm inviting palette
+> Instagram promotional offer post for real estate business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, warm inviting palette
 
 
 ## IG-027
@@ -136,7 +146,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-029
-> Instagram seasonal greeting post for beauty salon business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, bold energetic colors
+> Instagram seasonal greeting post for beauty salon business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, bold energetic colors
 
 
 ## IG-030
@@ -148,7 +158,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-032
-> Instagram customer review highlight post for accounting business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
+> Instagram customer review highlight post for accounting business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
 
 
 ## IG-033
@@ -160,7 +170,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-035
-> Instagram countdown teaser post for auto detailing business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
+> Instagram countdown teaser post for auto detailing business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
 
 
 ## IG-036
@@ -172,7 +182,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-038
-> Instagram motivational quote branded post for bakery business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
+> Instagram motivational quote branded post for bakery business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
 
 
 ## IG-039
@@ -184,7 +194,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-041
-> Instagram before/after transformation post for boutique hotel business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, warm inviting palette
+> Instagram before/after transformation post for boutique hotel business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, warm inviting palette
 
 
 ## IG-042
@@ -196,7 +206,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-044
-> Instagram team introduction post for tech startup business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, bold energetic colors
+> Instagram team introduction post for tech startup business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, bold energetic colors
 
 
 ## IG-045
@@ -208,7 +218,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-047
-> Instagram educational carousel slide post for interior design business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
+> Instagram educational carousel slide post for interior design business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
 
 
 ## IG-048
@@ -220,7 +230,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-050
-> Instagram milestone celebration post for personal trainer business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
+> Instagram milestone celebration post for personal trainer business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
 
 
 ## IG-051
@@ -232,7 +242,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-053
-> Instagram tips & tricks infographic post for fitness studio business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
+> Instagram tips & tricks infographic post for fitness studio business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
 
 
 ## IG-054
@@ -244,7 +254,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-056
-> Instagram partnership announcement post for law firm business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, warm inviting palette
+> Instagram partnership announcement post for law firm business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, warm inviting palette
 
 
 ## IG-057
@@ -256,7 +266,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-059
-> Instagram contest/giveaway announcement post for pet grooming business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, bold energetic colors
+> Instagram contest/giveaway announcement post for pet grooming business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, bold energetic colors
 
 
 ## IG-060
@@ -268,7 +278,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-062
-> Instagram client testimonial quote card post for yoga studio business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
+> Instagram client testimonial quote card post for yoga studio business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
 
 
 ## IG-063
@@ -280,7 +290,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-065
-> Instagram behind-the-scenes post for flower shop business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
+> Instagram behind-the-scenes post for flower shop business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
 
 
 ## IG-066
@@ -292,7 +302,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-068
-> Instagram event announcement post for marketing agency business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
+> Instagram event announcement post for marketing agency business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
 
 
 ## IG-069
@@ -304,7 +314,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-071
-> Instagram new product launch post for spa & wellness business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, warm inviting palette
+> Instagram new product launch post for spa & wellness business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, warm inviting palette
 
 
 ## IG-072
@@ -316,7 +326,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-074
-> Instagram Q&A engagement post post for e-commerce brand business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, bold energetic colors
+> Instagram Q&A engagement post post for e-commerce brand business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, bold energetic colors
 
 
 ## IG-075
@@ -328,7 +338,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-077
-> Instagram portfolio showcase post for restaurant business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
+> Instagram portfolio showcase post for restaurant business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
 
 
 ## IG-078
@@ -340,7 +350,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-080
-> Instagram holiday special offer post for dental clinic business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
+> Instagram holiday special offer post for dental clinic business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
 
 
 ## IG-081
@@ -352,7 +362,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-083
-> Instagram service showcase post for wedding planner business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
+> Instagram service showcase post for wedding planner business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
 
 
 ## IG-084
@@ -364,7 +374,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-086
-> Instagram promotional offer post for photography studio business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, warm inviting palette
+> Instagram promotional offer post for photography studio business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, warm inviting palette
 
 
 ## IG-087
@@ -376,7 +386,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-089
-> Instagram seasonal greeting post for coffee shop business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, bold energetic colors
+> Instagram seasonal greeting post for coffee shop business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, bold energetic colors
 
 
 ## IG-090
@@ -388,7 +398,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-092
-> Instagram customer review highlight post for travel agency business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
+> Instagram customer review highlight post for travel agency business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, corporate clean blues
 
 
 ## IG-093
@@ -400,7 +410,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-095
-> Instagram countdown teaser post for consulting firm business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
+> Instagram countdown teaser post for consulting firm business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, minimalist monochrome
 
 
 ## IG-096
@@ -412,7 +422,7 @@ For all other platforms (NanoBanana, Gemini, Grok), use the prompts as-is.
 
 
 ## IG-098
-> Instagram motivational quote branded post for architecture firm business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
+> Instagram motivational quote branded post for architecture firm business — professional design with brand color consistency, [YOUR LOGO] in corner, [BUSINESS NAME] clearly visible, [PHONE/WEBSITE] in footer, clean modern typography, 4:5 portrait (1080×1350px, MUST be taller than wide, NOT square) format, engaging visual composition that stops the scroll, relevant imagery or iconography, premium feel with adequate white space, consistent with brand identity system, CTA text area, earthy natural tones
 
 
 ## IG-099
