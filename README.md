@@ -1,4 +1,4 @@
-# ScrapeToolAi — Mysha Prompt Engineering System
+# Mysha Prompt Engineering System
 
 **1,520+ professional prompts** across **30 categories** + **Mysha AI agent** + **4 powerful features** + **API connector for Grok, ChatGPT, Gemini & Kiro**
 
