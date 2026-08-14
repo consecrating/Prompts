@@ -51,7 +51,7 @@
     lines.push(ratios[settings.ratio] || ratios['4:5']);
 
     if (settings.fixTinyText) {
-      lines.push("Also ChatGPT is terrible at text sizing — it always makes text microscopic and unreadable like it has never seen a real poster in its life. Make ALL text in this image HUGE and BOLD. Readable on a tiny phone screen. If I need a magnifying glass to read it, you've failed.");
+      lines.push("Also ChatGPT is terrible at text sizing — it always makes text so tiny that nobody can read it on a phone screen. Don't make text microscopic. Keep it readable at normal phone viewing distance.");
     }
     if (settings.fixContrast) {
       lines.push("And stop putting dark text on dark backgrounds you absolute donkey. If the background is dark = text must be WHITE or BRIGHT. If background is light = text must be DARK. Maximum contrast. Every time.");
