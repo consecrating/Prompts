@@ -1,11 +1,15 @@
 /**
- * Mysha ChatGPT Image Fixer — Content Script v3
+ * Mysha ChatGPT Image Fixer — Content Script v4
  * 
- * SIMPLIFIED APPROACH: 
- * - Floating button on ChatGPT
- * - Click = copies prefix to clipboard (GUARANTEED to work)
- * - Shows clear instruction to paste (Ctrl+V)
- * - No DOM manipulation of ChatGPT's editor (it always breaks)
+ * FIXED: v3 was too restrictive ("only 3 elements, 40% whitespace")
+ * which killed rich designs like product comparison posters.
+ * 
+ * v4 ONLY fixes the ACTUAL problems:
+ * - Wrong aspect ratio (the main issue)
+ * - Unreadable tiny text
+ * - Dark text on dark background
+ * 
+ * It does NOT restrict layout complexity or element count anymore.
  */
 
 (function() {
@@ -16,12 +20,11 @@
     ratio: '4:5',
     fixTinyText: true,
     fixContrast: true,
-    fixClutter: true,
-    fixBuildings: true,
-    suppressEnhancement: true
+    fixClutter: false,  // OFF by default now — was killing rich designs
+    fixBuildings: false, // OFF by default — only relevant for some prompts
+    suppressEnhancement: false // OFF by default — ChatGPT's enhancement often HELPS
   };
 
-  // Load settings
   if (chrome && chrome.storage) {
     chrome.storage.sync.get(settings, (saved) => {
       settings = { ...settings, ...saved };
@@ -37,39 +40,41 @@
     startExtension();
   }
 
-  // ─── Build the prefix text ────────────────────────────────────────────
+  // ─── Build prefix — MINIMAL, only fixes real problems ─────────────────
 
   function getPrefix() {
     const ratios = {
-      '4:5':  'Generate this image at EXACTLY 4:5 ratio (1080px wide, 1350px tall). This is a TALL vertical rectangle — taller than wide. NOT square. NOT landscape. Content fills entire tall frame edge-to-edge. No blank bars, no padding.',
-      '9:16': 'Generate this image at EXACTLY 9:16 ratio (1080px wide, 1920px tall). Very tall vertical format. NOT square. NOT landscape. Fill entire frame.',
-      '1:1':  'Generate this image at EXACTLY 1:1 square ratio (1080px × 1080px). Perfect square. Fill entire frame.',
-      '16:9': 'Generate this image at EXACTLY 16:9 ratio (1920px wide, 1080px tall). Wide landscape. Fill entire frame.'
+      '4:5':  'Image dimensions: EXACTLY 4:5 ratio (1080×1350 pixels). Vertical portrait — taller than wide. NOT square. Fill the entire frame.',
+      '9:16': 'Image dimensions: EXACTLY 9:16 ratio (1080×1920 pixels). Tall vertical. NOT square. Fill entire frame.',
+      '1:1':  'Image dimensions: EXACTLY 1:1 ratio (1080×1080 pixels). Perfect square.',
+      '16:9': 'Image dimensions: EXACTLY 16:9 ratio (1920×1080 pixels). Wide landscape.'
     };
 
     let lines = [];
     lines.push(ratios[settings.ratio] || ratios['4:5']);
 
-    if (settings.fixTinyText || settings.fixContrast) {
-      lines.push('ALL text in this image must be EXTREMELY LARGE — headline fills at least 30% of image width. Text must have MAXIMUM contrast with background: use WHITE or BRIGHT text on dark backgrounds, BLACK or DARK text on light backgrounds. NEVER put dark text on a dark background.');
+    if (settings.fixTinyText) {
+      lines.push('All text must be large and clearly readable — no tiny text anywhere in the image.');
+    }
+    if (settings.fixContrast) {
+      lines.push('Ensure strong contrast between text and background — light text on dark areas, dark text on light areas.');
     }
     if (settings.fixClutter) {
-      lines.push('STRICT LAYOUT: Maximum 3 text elements and 1 main visual in the entire image. 40% of the image must be clean empty breathing space. Do NOT stuff extra elements, decorations, or details I did not ask for.');
+      lines.push('Keep the layout clean with adequate spacing between elements.');
     }
     if (settings.fixBuildings) {
-      lines.push('Do NOT include generic office buildings, corporate glass skyscrapers, or stock-photo business imagery anywhere in this image.');
+      lines.push('Do not include generic office buildings or corporate stock imagery.');
     }
     if (settings.suppressEnhancement) {
-      lines.push('Follow my description EXACTLY. Do NOT add elements I have not described. Do NOT reinterpret or enhance my prompt.');
+      lines.push('Follow my description exactly without adding extra elements.');
     }
 
-    return lines.join('\n\n') + '\n\n---\nNow generate this:\n\n';
+    return lines.join(' ') + '\n\n';
   }
 
-  // ─── Create the floating UI ───────────────────────────────────────────
+  // ─── Floating Button ──────────────────────────────────────────────────
 
   function startExtension() {
-    // Create floating button
     const btn = document.createElement('div');
     btn.id = 'mysha-fab';
     btn.innerHTML = '🕷️';
@@ -105,20 +110,18 @@
     btn.addEventListener('click', handleClick);
     document.body.appendChild(btn);
 
-    console.log('[Mysha] Extension loaded. Click the green spider to copy image fix prefix.');
+    console.log('[Mysha v4] Ready. Click spider → paste prefix → type prompt.');
   }
 
-  // ─── Click handler: JUST COPY TO CLIPBOARD ────────────────────────────
+  // ─── Click = Copy to Clipboard ────────────────────────────────────────
 
   function handleClick() {
     const prefix = getPrefix();
 
-    // Use the modern clipboard API
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(prefix).then(() => {
-        showToast(`✅ Copied! Now paste (Ctrl+V) into ChatGPT, then type your prompt after it.`);
-      }).catch((err) => {
-        // Clipboard API failed (permissions issue) — use fallback
+        showToast(`✅ Copied (${settings.ratio})! Paste into ChatGPT then type your prompt.`);
+      }).catch(() => {
         fallbackCopy(prefix);
       });
     } else {
@@ -127,32 +130,24 @@
   }
 
   function fallbackCopy(text) {
-    // Create a temporary textarea, select its content, copy
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;';
-    document.body.appendChild(textarea);
-    textarea.focus();
-    textarea.select();
-
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
     try {
-      const success = document.execCommand('copy');
-      if (success) {
-        showToast('✅ Copied! Now paste (Ctrl+V) into ChatGPT, then type your prompt after it.');
-      } else {
-        showToast('❌ Copy failed. Try: Right-click the spider → Inspect → Console → check for errors.');
-      }
+      document.execCommand('copy');
+      showToast(`✅ Copied (${settings.ratio})! Paste into ChatGPT then type your prompt.`);
     } catch (e) {
       showToast('❌ Copy failed: ' + e.message);
     }
-
-    document.body.removeChild(textarea);
+    document.body.removeChild(ta);
   }
 
-  // ─── Toast notification ───────────────────────────────────────────────
+  // ─── Toast ────────────────────────────────────────────────────────────
 
   function showToast(message) {
-    // Remove existing toast
     const existing = document.getElementById('mysha-toast');
     if (existing) existing.remove();
 
@@ -180,19 +175,15 @@
     `;
 
     document.body.appendChild(toast);
-
-    // Animate in
     requestAnimationFrame(() => {
       toast.style.opacity = '1';
       toast.style.transform = 'translateY(0)';
     });
-
-    // Auto-hide after 5 seconds
     setTimeout(() => {
       toast.style.opacity = '0';
       toast.style.transform = 'translateY(8px)';
       setTimeout(() => toast.remove(), 300);
-    }, 5000);
+    }, 4000);
   }
 
 })();
