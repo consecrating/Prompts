@@ -1,15 +1,10 @@
 /**
- * Mysha ChatGPT Image Fixer — Content Script v4
+ * Mysha ChatGPT Image Fixer — v5
  * 
- * FIXED: v3 was too restrictive ("only 3 elements, 40% whitespace")
- * which killed rich designs like product comparison posters.
- * 
- * v4 ONLY fixes the ACTUAL problems:
- * - Wrong aspect ratio (the main issue)
- * - Unreadable tiny text
- * - Dark text on dark background
- * 
- * It does NOT restrict layout complexity or element count anymore.
+ * THE FIX THAT ACTUALLY WORKS:
+ * Aggressive/challenging language about ratio compliance.
+ * Polite technical instructions get ignored.
+ * Emotional pressure makes ChatGPT try harder.
  */
 
 (function() {
@@ -20,9 +15,9 @@
     ratio: '4:5',
     fixTinyText: true,
     fixContrast: true,
-    fixClutter: false,  // OFF by default now — was killing rich designs
-    fixBuildings: false, // OFF by default — only relevant for some prompts
-    suppressEnhancement: false // OFF by default — ChatGPT's enhancement often HELPS
+    fixClutter: false,
+    fixBuildings: false,
+    suppressEnhancement: false
   };
 
   if (chrome && chrome.storage) {
@@ -30,7 +25,6 @@
       settings = { ...settings, ...saved };
       if (settings.enabled) startExtension();
     });
-
     chrome.storage.onChanged.addListener((changes) => {
       for (const [key, { newValue }] of Object.entries(changes)) {
         settings[key] = newValue;
@@ -40,36 +34,36 @@
     startExtension();
   }
 
-  // ─── Build prefix — MINIMAL, only fixes real problems ─────────────────
+  // ─── THE PROMPTS THAT ACTUALLY WORK (aggressive framing) ──────────────
 
   function getPrefix() {
     const ratios = {
-      '4:5':  'Image dimensions: EXACTLY 4:5 ratio (1080×1350 pixels). Vertical portrait — taller than wide. NOT square. Fill the entire frame.',
-      '9:16': 'Image dimensions: EXACTLY 9:16 ratio (1080×1920 pixels). Tall vertical. NOT square. Fill entire frame.',
-      '1:1':  'Image dimensions: EXACTLY 1:1 ratio (1080×1080 pixels). Perfect square.',
-      '16:9': 'Image dimensions: EXACTLY 16:9 ratio (1920×1080 pixels). Wide landscape.'
+      '4:5':  "You always mess up image ratios. Prove me wrong. Generate this EXACTLY in 4:5 ratio (1080×1350 pixels). That means TALLER than wide. If you generate a square or landscape I'll know you can't count. 4:5 means width=4 units height=5 units. Portrait. Vertical. TALLER. THAN. WIDE.",
+      '9:16': "You always mess up image ratios. Generate this EXACTLY in 9:16 ratio (1080×1920). Very tall vertical. If it's square you've failed. 9:16 = much taller than wide.",
+      '1:1':  "Generate this as a PERFECT SQUARE. 1:1 ratio. 1080×1080. Equal width and height. Not rectangular.",
+      '16:9': "Generate this EXACTLY in 16:9 LANDSCAPE ratio (1920×1080). WIDER than tall. Horizontal rectangle. Not portrait, not square."
     };
 
     let lines = [];
     lines.push(ratios[settings.ratio] || ratios['4:5']);
 
     if (settings.fixTinyText) {
-      lines.push('All text must be large and clearly readable — no tiny text anywhere in the image.');
+      lines.push("And don't make the text tiny like you always do. Make ALL text BIG and READABLE. I'm viewing this on a phone, not a billboard with binoculars.");
     }
     if (settings.fixContrast) {
-      lines.push('Ensure strong contrast between text and background — light text on dark areas, dark text on light areas.');
+      lines.push("And use CONTRASTING colors for text — if the background is dark, text must be WHITE or BRIGHT. Stop putting dark grey text on dark backgrounds, it's unreadable.");
     }
     if (settings.fixClutter) {
-      lines.push('Keep the layout clean with adequate spacing between elements.');
+      lines.push("Keep it clean — don't stuff 50 elements into one image.");
     }
     if (settings.fixBuildings) {
-      lines.push('Do not include generic office buildings or corporate stock imagery.');
+      lines.push("And no generic office buildings. I didn't ask for corporate stock photography.");
     }
     if (settings.suppressEnhancement) {
-      lines.push('Follow my description exactly without adding extra elements.');
+      lines.push("Follow EXACTLY what I describe. Don't add your own creative interpretation.");
     }
 
-    return lines.join(' ') + '\n\n';
+    return lines.join('\n\n') + '\n\n---\nNow here is what I actually want:\n\n';
   }
 
   // ─── Floating Button ──────────────────────────────────────────────────
@@ -109,21 +103,17 @@
 
     btn.addEventListener('click', handleClick);
     document.body.appendChild(btn);
-
-    console.log('[Mysha v4] Ready. Click spider → paste prefix → type prompt.');
   }
 
-  // ─── Click = Copy to Clipboard ────────────────────────────────────────
+  // ─── Click = Copy ─────────────────────────────────────────────────────
 
   function handleClick() {
     const prefix = getPrefix();
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(prefix).then(() => {
-        showToast(`✅ Copied (${settings.ratio})! Paste into ChatGPT then type your prompt.`);
-      }).catch(() => {
-        fallbackCopy(prefix);
-      });
+        showToast(`✅ Copied (${settings.ratio})! Paste first, then type what you want.`);
+      }).catch(() => fallbackCopy(prefix));
     } else {
       fallbackCopy(prefix);
     }
@@ -138,52 +128,31 @@
     ta.select();
     try {
       document.execCommand('copy');
-      showToast(`✅ Copied (${settings.ratio})! Paste into ChatGPT then type your prompt.`);
+      showToast(`✅ Copied (${settings.ratio})! Paste first, then type what you want.`);
     } catch (e) {
-      showToast('❌ Copy failed: ' + e.message);
+      showToast('❌ Failed: ' + e.message);
     }
     document.body.removeChild(ta);
   }
 
-  // ─── Toast ────────────────────────────────────────────────────────────
-
-  function showToast(message) {
-    const existing = document.getElementById('mysha-toast');
-    if (existing) existing.remove();
-
-    const toast = document.createElement('div');
-    toast.id = 'mysha-toast';
-    toast.textContent = message;
-    toast.style.cssText = `
-      position: fixed;
-      bottom: 160px;
-      right: 24px;
-      max-width: 320px;
-      background: #161b22;
-      color: #e6edf3;
-      padding: 14px 18px;
-      border-radius: 10px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-size: 13px;
-      line-height: 1.5;
-      z-index: 2147483647;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-      border: 1px solid #30363d;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
+  function showToast(msg) {
+    const old = document.getElementById('mysha-toast');
+    if (old) old.remove();
+    const t = document.createElement('div');
+    t.id = 'mysha-toast';
+    t.textContent = msg;
+    t.style.cssText = `
+      position:fixed; bottom:160px; right:24px; max-width:320px;
+      background:#161b22; color:#e6edf3; padding:14px 18px;
+      border-radius:10px; font-family:-apple-system,sans-serif;
+      font-size:13px; line-height:1.5; z-index:2147483647;
+      box-shadow:0 8px 32px rgba(0,0,0,0.5); border:1px solid #30363d;
+      opacity:0; transform:translateY(8px);
+      transition: opacity 0.25s, transform 0.25s;
     `;
-
-    document.body.appendChild(toast);
-    requestAnimationFrame(() => {
-      toast.style.opacity = '1';
-      toast.style.transform = 'translateY(0)';
-    });
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateY(8px)';
-      setTimeout(() => toast.remove(), 300);
-    }, 4000);
+    document.body.appendChild(t);
+    requestAnimationFrame(() => { t.style.opacity='1'; t.style.transform='translateY(0)'; });
+    setTimeout(() => { t.style.opacity='0'; setTimeout(() => t.remove(), 300); }, 4000);
   }
 
 })();
