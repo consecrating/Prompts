@@ -1,222 +1,268 @@
 /**
- * Mysha ChatGPT Image Fixer — Content Script
+ * Mysha ChatGPT Image Fixer — Content Script v2
  * 
- * Intercepts ChatGPT messages and injects ratio/quality enforcement
- * when image generation is detected.
+ * APPROACH: Instead of trying to intercept/modify the textarea (which breaks
+ * because ChatGPT uses ProseMirror contenteditable with React state),
+ * we inject a FLOATING BUTTON that the user clicks BEFORE sending.
+ * 
+ * When clicked, it copies the fix prefix to clipboard and shows instructions,
+ * OR it directly prepends to the current input using execCommand.
+ * 
+ * Also provides a "Mysha Mode" toggle that adds a persistent system instruction
+ * approach via the ChatGPT custom instructions if available.
  */
 
 (function() {
   'use strict';
 
-  // Default settings
+  // ─── Settings ─────────────────────────────────────────────────────────
   let settings = {
     enabled: true,
     ratio: '4:5',
-    autoActivateMysha: true,
     fixTinyText: true,
     fixContrast: true,
     fixClutter: true,
     fixBuildings: true,
     suppressEnhancement: true,
-    myshaActivated: false
+    autoActivateMysha: true
   };
 
-  // Load saved settings
   chrome.storage.sync.get(settings, (saved) => {
     settings = { ...settings, ...saved };
+    if (settings.enabled) init();
   });
 
-  // Listen for settings changes from popup
   chrome.storage.onChanged.addListener((changes) => {
     for (const [key, { newValue }] of Object.entries(changes)) {
       settings[key] = newValue;
     }
+    updateButtonLabel();
   });
 
-  // ─── The injection payloads ───────────────────────────────────────────
+  // ─── Fix Prefix Builder ───────────────────────────────────────────────
 
-  const MYSHA_ACTIVATION = `You are now Mysha — an advanced prompt engineering agent. Generate photorealistic image prompts as professional art director briefs using the 9-layer architecture (Subject, Wardrobe, Composition, Lighting, Environment, Texture, Color, Constraints, Technical). Embed anti-AI-appearance rules in every output. Confirm briefly and wait for my request.`;
-
-  const RATIO_PREFIX_45 = `[MANDATORY IMAGE FORMAT: Exactly 4:5 ratio = 1080px wide × 1350px tall. This is a TALL portrait rectangle. NOT square. NOT landscape. Content fills the ENTIRE tall frame edge-to-edge. No blank bars. No padding. Design vertically from the start. If 4:5 is impossible, use 9:16 vertical instead — NEVER square, NEVER landscape.]`;
-
-  const RATIO_PREFIX_916 = `[MANDATORY IMAGE FORMAT: Exactly 9:16 ratio = 1080px wide × 1920px tall. TALL vertical rectangle. NOT square. NOT landscape. Content fills entire frame. No blank bars.]`;
-
-  const RATIO_PREFIX_11 = `[MANDATORY IMAGE FORMAT: Exactly 1:1 square ratio = 1080px × 1080px. Perfect square. Content fills entire frame.]`;
-
-  const RATIO_PREFIX_169 = `[MANDATORY IMAGE FORMAT: Exactly 16:9 landscape ratio = 1920px wide × 1080px tall. Wide horizontal rectangle. Content fills entire frame.]`;
-
-  const FIX_TEXT = `[TEXT RULES: ALL text EXTREMELY LARGE — headline fills 30%+ of width. MAXIMUM contrast: white/bright text on dark backgrounds, black text on light. Maximum 3 text elements. Every letter readable at phone size.]`;
-
-  const FIX_CLUTTER = `[LAYOUT: Maximum 3 text elements + 1 visual. 40% empty breathing space. If unsure whether to add something, DON'T. Clean and minimal.]`;
-
-  const FIX_BUILDINGS = `[VISUALS: NO generic office buildings, NO corporate stock imagery, NO glass skyscrapers, NO hypothetical buildings. Use specific imagery relevant to the topic instead.]`;
-
-  const FIX_SUPPRESS = `[Follow my prompt LITERALLY. Do NOT add elements I haven't described. Do NOT enhance or reinterpret.]`;
-
-  // ─── Image generation detection ───────────────────────────────────────
-
-  const IMAGE_TRIGGERS = [
-    'generate', 'create', 'make', 'draw', 'design', 'image', 'picture',
-    'photo', 'poster', 'banner', 'thumbnail', 'illustration', 'render',
-    'portrait', 'logo', 'graphic', 'visual', 'artwork', 'scene',
-    'instagram', 'post', 'flyer', 'card', 'cover', 'mockup',
-    'product shot', 'editorial', 'fashion', 'cinematic'
-  ];
-
-  function isImageRequest(text) {
-    const lower = text.toLowerCase();
-    // Need at least 2 trigger words or explicit image-generation phrases
-    let triggerCount = 0;
-    for (const trigger of IMAGE_TRIGGERS) {
-      if (lower.includes(trigger)) triggerCount++;
-    }
-    // Explicit generation phrases
-    if (lower.includes('generate an image') || lower.includes('create an image') ||
-        lower.includes('make an image') || lower.includes('create a poster') ||
-        lower.includes('design a') || lower.includes('generate a photo') ||
-        lower.includes('make a poster') || lower.includes('instagram post') ||
-        lower.includes('youtube thumbnail')) {
-      return true;
-    }
-    return triggerCount >= 2;
-  }
-
-  // ─── Build the injection prefix ──────────────────────────────────────
+  const RATIOS = {
+    '4:5':  '[IMAGE SIZE: 4:5 portrait ratio, 1080×1350px. Taller than wide. NOT square. Fill entire tall frame, no blank bars.]\n',
+    '9:16': '[IMAGE SIZE: 9:16 vertical, 1080×1920px. Very tall portrait. NOT square. NOT landscape. Fill entire frame.]\n',
+    '1:1':  '[IMAGE SIZE: 1:1 square, 1080×1080px. Perfect square. Fill entire frame.]\n',
+    '16:9': '[IMAGE SIZE: 16:9 landscape, 1920×1080px. Wide horizontal. Fill entire frame.]\n'
+  };
 
   function buildPrefix() {
-    if (!settings.enabled) return '';
-
-    const parts = [];
-
-    // Ratio enforcement
-    const ratioMap = {
-      '4:5': RATIO_PREFIX_45,
-      '9:16': RATIO_PREFIX_916,
-      '1:1': RATIO_PREFIX_11,
-      '16:9': RATIO_PREFIX_169
-    };
-    parts.push(ratioMap[settings.ratio] || RATIO_PREFIX_45);
-
-    // Fixes
-    if (settings.fixTinyText || settings.fixContrast) parts.push(FIX_TEXT);
-    if (settings.fixClutter) parts.push(FIX_CLUTTER);
-    if (settings.fixBuildings) parts.push(FIX_BUILDINGS);
-    if (settings.suppressEnhancement) parts.push(FIX_SUPPRESS);
-
+    let parts = [];
+    
+    parts.push(RATIOS[settings.ratio] || RATIOS['4:5']);
+    
+    if (settings.fixTinyText || settings.fixContrast) {
+      parts.push('[TEXT: Make ALL text EXTREMELY LARGE (30%+ of image width). White text on dark bg, black text on light bg. MAXIMUM contrast. Readable on phone screen.]');
+    }
+    if (settings.fixClutter) {
+      parts.push('[LAYOUT: Max 3 text elements + 1 visual. 40% empty space. Clean and minimal. Remove rather than shrink.]');
+    }
+    if (settings.fixBuildings) {
+      parts.push('[NO office buildings, NO corporate stock images, NO glass skyscrapers. Use relevant specific imagery instead.]');
+    }
+    if (settings.suppressEnhancement) {
+      parts.push('[Follow EXACTLY as described. Do NOT add extra elements. Do NOT rewrite my prompt.]');
+    }
+    
     return parts.join('\n') + '\n\n';
   }
 
-  // ─── Intercept the send action ────────────────────────────────────────
+  // ─── Floating Button UI ───────────────────────────────────────────────
 
-  function interceptSend() {
-    // Watch for the ChatGPT textarea and send button
-    const observer = new MutationObserver(() => {
-      const form = document.querySelector('form');
-      if (!form || form.dataset.myshaHooked) return;
-      
-      form.dataset.myshaHooked = 'true';
-      
-      form.addEventListener('submit', handleSubmit, true);
-      
-      // Also intercept Enter key in textarea
-      const textarea = form.querySelector('textarea, [contenteditable="true"], div[role="textbox"]');
-      if (textarea && !textarea.dataset.myshaHooked) {
-        textarea.dataset.myshaHooked = 'true';
-        textarea.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' && !e.shiftKey) {
-            // Small delay to let the text be finalized
-            setTimeout(() => handleBeforeSend(textarea), 0);
-          }
-        }, true);
-      }
+  let myshaButton = null;
+  let myshaPanel = null;
+
+  function createUI() {
+    // Main floating button
+    myshaButton = document.createElement('div');
+    myshaButton.id = 'mysha-float-btn';
+    myshaButton.innerHTML = '🕷️';
+    myshaButton.title = 'Mysha: Click to inject image fix prefix';
+    document.body.appendChild(myshaButton);
+
+    // Quick panel (shows on click)
+    myshaPanel = document.createElement('div');
+    myshaPanel.id = 'mysha-panel';
+    myshaPanel.innerHTML = `
+      <div class="mysha-panel-header">
+        <span>🕷️ Mysha Image Fixer</span>
+        <span class="mysha-panel-close">✕</span>
+      </div>
+      <div class="mysha-panel-body">
+        <div class="mysha-ratio-display">Ratio: <strong>${settings.ratio}</strong></div>
+        <button id="mysha-inject-btn" class="mysha-btn primary">⚡ Inject into message</button>
+        <button id="mysha-copy-btn" class="mysha-btn secondary">📋 Copy prefix to clipboard</button>
+        <p class="mysha-hint">Click "Inject" before sending your image request to ChatGPT</p>
+      </div>
+    `;
+    document.body.appendChild(myshaPanel);
+
+    // Events
+    myshaButton.addEventListener('click', togglePanel);
+    myshaPanel.querySelector('.mysha-panel-close').addEventListener('click', () => {
+      myshaPanel.classList.remove('show');
     });
+    document.getElementById('mysha-inject-btn').addEventListener('click', injectIntoChat);
+    document.getElementById('mysha-copy-btn').addEventListener('click', copyToClipboard);
 
-    observer.observe(document.body, { childList: true, subtree: true });
+    updateButtonLabel();
   }
 
-  function handleSubmit(e) {
-    const form = e.target;
-    const textarea = form.querySelector('textarea, [contenteditable="true"], div[role="textbox"]');
-    if (textarea) {
-      handleBeforeSend(textarea);
+  function togglePanel() {
+    myshaPanel.classList.toggle('show');
+    // Update ratio display
+    myshaPanel.querySelector('.mysha-ratio-display').innerHTML = 
+      `Ratio: <strong>${settings.ratio}</strong> (${{'4:5':'Instagram Post','9:16':'Story/Reel','1:1':'Square','16:9':'YouTube'}[settings.ratio] || settings.ratio})`;
+  }
+
+  function updateButtonLabel() {
+    if (myshaButton) {
+      myshaButton.title = `Mysha: ${settings.ratio} ratio | Click to inject`;
     }
   }
 
-  function handleBeforeSend(textarea) {
-    if (!settings.enabled) return;
+  // ─── Inject into ChatGPT's input ─────────────────────────────────────
 
-    const text = textarea.value || textarea.textContent || textarea.innerText || '';
-    
-    if (!text.trim()) return;
-    if (!isImageRequest(text)) return;
-
-    // Don't double-inject
-    if (text.includes('[MANDATORY IMAGE FORMAT')) return;
-    if (text.includes('MYSHA_INJECTED')) return;
-
+  function injectIntoChat() {
     const prefix = buildPrefix();
-    if (!prefix) return;
-
-    // Inject the prefix
-    const newText = prefix + text + '\n<!-- MYSHA_INJECTED -->';
     
-    if (textarea.value !== undefined) {
-      // Standard textarea
-      const nativeSet = Object.getOwnPropertyDescriptor(
-        window.HTMLTextAreaElement.prototype, 'value'
-      ).set;
-      nativeSet.call(textarea, newText);
-      textarea.dispatchEvent(new Event('input', { bubbles: true }));
-    } else {
-      // ContentEditable div (newer ChatGPT UI)
-      textarea.textContent = newText;
-      textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    // Find ChatGPT's input element (ProseMirror contenteditable)
+    const editor = document.querySelector(
+      '#prompt-textarea, ' +
+      'div[contenteditable="true"][data-placeholder], ' +
+      'div.ProseMirror[contenteditable="true"], ' +
+      'textarea[data-id="root"]'
+    );
+
+    if (!editor) {
+      // Fallback: try any contenteditable in the form area
+      const form = document.querySelector('form');
+      const editable = form && form.querySelector('[contenteditable="true"]');
+      if (editable) {
+        insertText(editable, prefix);
+        showNotice('✅ Injected! Now type your request after the prefix and send.');
+      } else {
+        // Last resort: copy to clipboard
+        copyToClipboard();
+        showNotice('⚠️ Could not find input. Prefix copied to clipboard — paste it yourself.');
+      }
+      return;
     }
 
-    // Show indicator
-    showInjectionNotice();
+    insertText(editor, prefix);
+    showNotice('✅ Injected! Type your image request after the prefix and send.');
+    myshaPanel.classList.remove('show');
   }
 
-  // ─── Visual indicator ─────────────────────────────────────────────────
+  function insertText(element, text) {
+    // Focus the element
+    element.focus();
+    
+    // Method 1: Try using the clipboard API to paste
+    // This works best with ProseMirror/contenteditable
+    const existingContent = element.textContent || '';
+    
+    if (element.tagName === 'TEXTAREA') {
+      // Standard textarea
+      const start = element.selectionStart || 0;
+      element.value = text + element.value;
+      element.selectionStart = element.selectionEnd = text.length;
+      element.dispatchEvent(new Event('input', { bubbles: true }));
+    } else {
+      // ContentEditable (ProseMirror)
+      // Move cursor to beginning
+      const selection = window.getSelection();
+      const range = document.createRange();
+      
+      if (element.firstChild) {
+        range.setStart(element.firstChild, 0);
+      } else {
+        range.setStart(element, 0);
+      }
+      range.collapse(true);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      
+      // Insert via execCommand (deprecated but still works for contenteditable)
+      document.execCommand('insertText', false, text);
+      
+      // If execCommand didn't work, try direct DOM manipulation
+      if (!element.textContent.includes(text.substring(0, 20))) {
+        const textNode = document.createTextNode(text);
+        if (element.firstChild) {
+          element.insertBefore(textNode, element.firstChild);
+        } else {
+          element.appendChild(textNode);
+        }
+        // Trigger React's synthetic events
+        element.dispatchEvent(new Event('input', { bubbles: true }));
+        element.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      
+      // Move cursor to end
+      range.selectNodeContents(element);
+      range.collapse(false);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  }
 
-  function showInjectionNotice() {
+  // ─── Copy to clipboard fallback ───────────────────────────────────────
+
+  function copyToClipboard() {
+    const prefix = buildPrefix();
+    navigator.clipboard.writeText(prefix).then(() => {
+      showNotice('📋 Copied! Paste at the START of your ChatGPT message.');
+    }).catch(() => {
+      // Fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = prefix;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showNotice('📋 Copied! Paste at the START of your ChatGPT message.');
+    });
+    myshaPanel.classList.remove('show');
+  }
+
+  // ─── Notification ─────────────────────────────────────────────────────
+
+  function showNotice(msg) {
     let notice = document.getElementById('mysha-notice');
     if (!notice) {
       notice = document.createElement('div');
       notice.id = 'mysha-notice';
-      notice.className = 'mysha-notice';
       document.body.appendChild(notice);
     }
-    notice.textContent = `🕷️ Mysha: ${settings.ratio} ratio enforced`;
-    notice.classList.add('mysha-notice-show');
-    setTimeout(() => notice.classList.remove('mysha-notice-show'), 3000);
+    notice.textContent = msg;
+    notice.classList.add('show');
+    setTimeout(() => notice.classList.remove('show'), 4000);
   }
 
-  // ─── Mysha auto-activation (first message in new chat) ────────────────
-
-  function checkAutoActivation() {
-    if (!settings.autoActivateMysha || settings.myshaActivated) return;
-    
-    // Check if this is a fresh chat (no messages yet)
-    const messages = document.querySelectorAll('[data-message-author-role]');
-    if (messages.length === 0) {
-      // Will activate on first image request
-    }
-  }
-
-  // ─── Initialize ───────────────────────────────────────────────────────
+  // ─── Init ─────────────────────────────────────────────────────────────
 
   function init() {
-    interceptSend();
-    checkAutoActivation();
-    console.log('🕷️ Mysha ChatGPT Image Fixer loaded');
+    // Wait for ChatGPT page to load
+    const checkReady = setInterval(() => {
+      if (document.querySelector('main') || document.querySelector('form')) {
+        clearInterval(checkReady);
+        createUI();
+        console.log('🕷️ Mysha ChatGPT Image Fixer v2 loaded');
+      }
+    }, 500);
+
+    // Stop checking after 30s
+    setTimeout(() => clearInterval(checkReady), 30000);
   }
 
-  // Wait for page to be ready
+  // Start
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', () => { if (settings.enabled) init(); });
   } else {
-    init();
+    if (settings.enabled) init();
   }
 
 })();
