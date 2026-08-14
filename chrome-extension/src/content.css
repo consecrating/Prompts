@@ -1,0 +1,25 @@
+/* Mysha injection notice */
+.mysha-notice {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #00ff88;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 99999;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(0, 255, 136, 0.15);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.mysha-notice-show {
+  opacity: 1;
+  transform: translateY(0);
+}

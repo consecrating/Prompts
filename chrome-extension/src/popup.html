@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mysha — ChatGPT Image Fixer</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🕷️ Mysha</h1>
+      <p class="subtitle">ChatGPT Image Fixer</p>
+    </header>
+
+    <div class="toggle-section">
+      <label class="toggle">
+        <input type="checkbox" id="enabled" checked>
+        <span class="slider"></span>
+        <span class="label">Extension Active</span>
+      </label>
+    </div>
+
+    <div class="section">
+      <h2>Aspect Ratio</h2>
+      <div class="radio-group">
+        <label class="radio-option selected" data-ratio="4:5">
+          <input type="radio" name="ratio" value="4:5" checked>
+          <span class="radio-label">4:5</span>
+          <span class="radio-desc">Instagram Post (1080×1350)</span>
+        </label>
+        <label class="radio-option" data-ratio="9:16">
+          <input type="radio" name="ratio" value="9:16">
+          <span class="radio-label">9:16</span>
+          <span class="radio-desc">Story / Reel (1080×1920)</span>
+        </label>
+        <label class="radio-option" data-ratio="1:1">
+          <input type="radio" name="ratio" value="1:1">
+          <span class="radio-label">1:1</span>
+          <span class="radio-desc">Square (1080×1080)</span>
+        </label>
+        <label class="radio-option" data-ratio="16:9">
+          <input type="radio" name="ratio" value="16:9">
+          <span class="radio-label">16:9</span>
+          <span class="radio-desc">YouTube / Landscape (1920×1080)</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>ChatGPT Fixes</h2>
+      <label class="toggle small">
+        <input type="checkbox" id="fixTinyText" checked>
+        <span class="slider"></span>
+        <span class="label">Fix tiny/unreadable text</span>
+      </label>
+      <label class="toggle small">
+        <input type="checkbox" id="fixContrast" checked>
+        <span class="slider"></span>
+        <span class="label">Fix dark-on-dark contrast</span>
+      </label>
+      <label class="toggle small">
+        <input type="checkbox" id="fixClutter" checked>
+        <span class="slider"></span>
+        <span class="label">Fix overstuffed layouts</span>
+      </label>
+      <label class="toggle small">
+        <input type="checkbox" id="fixBuildings" checked>
+        <span class="slider"></span>
+        <span class="label">Block generic office buildings</span>
+      </label>
+      <label class="toggle small">
+        <input type="checkbox" id="suppressEnhancement" checked>
+        <span class="slider"></span>
+        <span class="label">Stop ChatGPT rewriting prompts</span>
+      </label>
+    </div>
+
+    <div class="section">
+      <h2>Mysha Agent</h2>
+      <label class="toggle small">
+        <input type="checkbox" id="autoActivateMysha" checked>
+        <span class="slider"></span>
+        <span class="label">Auto-activate Mysha prompt style</span>
+      </label>
+      <a href="https://github.com/consecrating/Prompts" target="_blank" class="link">
+        View full prompt library →
+      </a>
+    </div>
+
+    <footer>
+      <p>v1.0.0 • <a href="https://github.com/consecrating/Prompts/tree/main/chrome-extension" target="_blank">Source</a></p>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

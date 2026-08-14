@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Mysha — ChatGPT Image Fixer",
+  "version": "1.0.0",
+  "description": "Forces ChatGPT to generate images in 4:5 Instagram ratio (1080×1350) with Mysha prompt engineering rules. Fixes tiny text, dark-on-dark, cluttered compositions, and wrong aspect ratios.",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
+      "js": ["src/content.js"],
+      "css": ["src/content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
